@@ -1,4 +1,4 @@
-//const axios = require('axios-proxy-fix');
+const axios = require('axios-proxy-fix');
 //const proxy = require('../proxy');
 const http = require('http');
 const Dev = require('../models/Dev');
@@ -31,6 +31,8 @@ module.exports = {
 
         const loggedDev = await Dev.findById(user);
 
+        console.log(loggedDev);
+
         const users = await Dev.find({
            $and: [
                {_id: {$ne: user}},
@@ -44,7 +46,7 @@ module.exports = {
 
     async store(req, res) {
         const { username } = req.body;
-        console.log(username);
+        //console.log(username);
         //console.log(proxy);
         
         const userExists = await Dev.findOne( { user: username});
@@ -53,17 +55,17 @@ module.exports = {
         }
 
 
-        const url = `http://localhost:4444/categoria/github/${username}`;        
-        
-        let get_promise = doGet(url);
-        let response_body = await get_promise;
+        //const url = `http://localhost:4444/categoria/github/${username}`;        
+        //const url = `https://api.github.com/users/${username}`;  
+        //let get_promise = doGet(url);
+        //let response_body = await get_promise;
 
-        //let response_body = await axios.get(`https://api.github.com/users/${username}`);
+        let response = await axios.get(`https://api.github.com/users/${username}`);
 
 
-        console.log(response_body);
+        console.log(response.data);
 
-        let {name, bio, avatar_url: avatar } = response_body;
+        const {name, bio, avatar_url: avatar } = response.data;
 
         const dev = await Dev.create({
             name,

@@ -11,7 +11,6 @@ const DevSchema = new Schema({
     bio: String,
     avatar: {
         type: String,
-        required: true,
     },
     likes: [{
         type: Schema.Types.ObjectId,
